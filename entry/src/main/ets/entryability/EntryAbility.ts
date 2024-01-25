@@ -4,13 +4,73 @@ import window from '@ohos.window';
 
 import AbilityConstant from '@ohos.app.ability.AbilityConstant';
 
+import AbilityLifecycleCallback from '@ohos.app.ability.AbilityLifecycleCallback';
+
+let abilityLifecycleCallback = {
+  onAbilityCreate(ability) {
+    //在ability创建时触发回调
+    console.log('AbilityLifecycleCallback onAbilityCreate.');
+  },
+  onWindowStageCreate(ability, windowStage) {
+    //在windowStage创建时触发回调
+    console.log('AbilityLifecycleCallback onWindowStageCreate.');
+  },
+  onWindowStageActive(ability, windowStage) {
+    //在windowStage获焦时触发回调
+    console.log('AbilityLifecycleCallback onWindowStageActive.');
+  },
+  onWindowStageInactive(ability, windowStage) {
+    //在windowStage失焦时触发回调
+    console.log('AbilityLifecycleCallback onWindowStageInactive.');
+  },
+  onWindowStageDestroy(ability, windowStage) {
+    //在windowStage销毁时触发回调
+    console.log('AbilityLifecycleCallback onWindowStageDestroy.');
+  },
+  onAbilityDestroy(ability) {
+    //在ability销毁时触发回调
+    console.log('AbilityLifecycleCallback onAbilityDestroy.');
+  },
+  onAbilityForeground(ability) {
+    //在ability的状态从后台转到前台时触发回调
+    console.log('AbilityLifecycleCallback onAbilityForeground.');
+  },
+  onAbilityBackground(ability) {
+    //在ability的状态从前台转到后台时触发回调
+    console.log('AbilityLifecycleCallback onAbilityBackground.');
+  },
+  onAbilityContinue(ability) {
+    //在ability迁移时触发回调
+    console.log('AbilityLifecycleCallback onAbilityContinue.');
+  }
+};
+
 export default class EntryAbility extends UIAbility {
   onCreate(want, launchParam) {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
+    console.log('Ability onCreate');
+    // 1.通过context属性获取applicationContext
+    let applicateionContext = this.context.getApplicationContext();
+    // 2.通过applicationContext注册监听应用内生命周期
+    try {
+      globalThis.lifecycleId = applicateionContext.on('abilityLifecycle', abilityLifecycleCallback);
+      console.log('onCreate lifecycleId: ' + globalThis.lifecycleId);
+    } catch (e) {
+      console.log('error: ' + e.code + ' ' + e.message);
+    }
   }
 
   onDestroy() {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');
+    let applicationCont = this.context.getApplicationContext();
+    //3通过applicationContext注销监听应用内生命周期
+    applicationCont.off('abilityLifecycle',globalThis.lifecycleId,(error) => {
+      if (error.code != 0) {
+        console.log('unregisterAbilityLifecycleCallback failed, error: ' + JSON.stringify(error));
+      } else {
+        console.log('unregisterAbilityLifecycleCallback success');
+      }
+    });
   }
 
   onWindowStageCreate(windowStage: window.WindowStage) {
