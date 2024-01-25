@@ -4,7 +4,6 @@ import window from '@ohos.window';
 
 import AbilityConstant from '@ohos.app.ability.AbilityConstant';
 
-import AbilityLifecycleCallback from '@ohos.app.ability.AbilityLifecycleCallback';
 
 let abilityLifecycleCallback = {
   onAbilityCreate(ability) {
@@ -54,7 +53,7 @@ export default class EntryAbility extends UIAbility {
     // 2.通过applicationContext注册监听应用内生命周期
     try {
       globalThis.lifecycleId = applicateionContext.on('abilityLifecycle', abilityLifecycleCallback);
-      console.log('onCreate lifecycleId: ' + globalThis.lifecycleId);
+      console.log('onCreate lifecycleId: ' + globalThis.lifecycleId + ' want: ' + want.abilityName);
     } catch (e) {
       console.log('error: ' + e.code + ' ' + e.message);
     }
@@ -64,7 +63,7 @@ export default class EntryAbility extends UIAbility {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');
     let applicationCont = this.context.getApplicationContext();
     //3通过applicationContext注销监听应用内生命周期
-    applicationCont.off('abilityLifecycle',globalThis.lifecycleId,(error) => {
+    applicationCont.off('abilityLifecycle', globalThis.lifecycleId, (error) => {
       if (error.code != 0) {
         console.log('unregisterAbilityLifecycleCallback failed, error: ' + JSON.stringify(error));
       } else {
@@ -84,6 +83,7 @@ export default class EntryAbility extends UIAbility {
       }
       hilog.info(0x0000, 'testTag', 'Succeeded in loading the content. Data: %{public}s', JSON.stringify(data) ?? '');
     });
+
   }
 
   onWindowStageDestroy() {
@@ -100,15 +100,29 @@ export default class EntryAbility extends UIAbility {
     // Ability has back to background
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');
   }
-  
+
   onMemoryLevel(level) {
     if (level === AbilityConstant.MemoryLevel.MEMORY_LEVEL_CRITICAL) {
       hilog.info(0x0000, 'testTag', '%{public}s', 'MEMORY LEVEL CRITICAL');
     }
   }
 
-  onContinue(want) {
+  onContinue(wantParams) {
+    //当ability迁移准备迁移时触发，保存数据。
+    wantParams['myData'] = 'my123456';
     return AbilityConstant.OnContinueResult.AGREE;
+  }
+
+  // onNewWant(want, launchParams) {
+  //   //当传入新的Want，ability再次被拉起时会回调执行该方法。
+  //   console.log('onNewWant, want:' + want.abilityName);
+  //   console.log('onNewWant, launchParams:' + JSON.stringify(launchParams));
+  // }
+
+  onDump(params) {
+    //转储客户端信息时调用。
+    console.log('dump, params:' + JSON.stringify(params));
+    return ['hhh'];
   }
 
   onSaveState(resaon, want) {
@@ -118,3 +132,4 @@ export default class EntryAbility extends UIAbility {
     return AbilityConstant.OnSaveResult.ALL_AGREE;
   }
 }
+
