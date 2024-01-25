@@ -2,6 +2,8 @@ import UIAbility from '@ohos.app.ability.UIAbility';
 import hilog from '@ohos.hilog';
 import window from '@ohos.window';
 
+import AbilityConstant from '@ohos.app.ability.AbilityConstant';
+
 export default class EntryAbility extends UIAbility {
   onCreate(want, launchParam) {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
@@ -37,5 +39,22 @@ export default class EntryAbility extends UIAbility {
   onBackground() {
     // Ability has back to background
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');
+  }
+  
+  onMemoryLevel(level) {
+    if (level === AbilityConstant.MemoryLevel.MEMORY_LEVEL_CRITICAL) {
+      hilog.info(0x0000, 'testTag', '%{public}s', 'MEMORY LEVEL CRITICAL');
+    }
+  }
+
+  onContinue(want) {
+    return AbilityConstant.OnContinueResult.AGREE;
+  }
+
+  onSaveState(resaon, want) {
+    if (resaon === AbilityConstant.StateType.CONTINUATION) {
+      console.log('Save the ability data when the ability continuation.')
+    }
+    return AbilityConstant.OnSaveResult.ALL_AGREE;
   }
 }
