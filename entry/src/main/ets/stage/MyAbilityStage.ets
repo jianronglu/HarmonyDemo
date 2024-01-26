@@ -1,10 +1,17 @@
 import AbilityStage from '@ohos.app.ability.AbilityStage';
 import Want from '@ohos.app.ability.Want';
+import appRecovery from '@ohos.app.ability.appRecovery';
 
 export class MyAbilityStage extends AbilityStage {
   onCreate() {
     //当应用创建时调用。
     console.log('MyAbilityStage.onCreate is called');
+    appRecovery.enableAppRecovery(
+      appRecovery.RestartFlag.ALWAYS_RESTART,
+      appRecovery.SaveOccasionFlag.SAVE_WHEN_ERROR,
+      appRecovery.SaveModeFlag.SAVE_WITH_FILE
+    );
+
   }
 
   onAcceptWant(want: Want) {

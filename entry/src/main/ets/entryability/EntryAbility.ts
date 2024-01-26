@@ -3,12 +3,19 @@ import hilog from '@ohos.hilog';
 import window from '@ohos.window';
 
 import AbilityConstant from '@ohos.app.ability.AbilityConstant';
+import errorManager from '@ohos.app.ability.errorManager';
 
+let errObserver = {
+  onUnhandledException(err) {
+    console.log('onUnhandledException, errMsg: ' + JSON.stringify(err));
+  }
+}
 
 let abilityLifecycleCallback = {
   onAbilityCreate(ability) {
     //在ability创建时触发回调
     console.log('AbilityLifecycleCallback onAbilityCreate.');
+
   },
   onWindowStageCreate(ability, windowStage) {
     //在windowStage创建时触发回调
@@ -57,6 +64,8 @@ export default class EntryAbility extends UIAbility {
     } catch (e) {
       console.log('error: ' + e.code + ' ' + e.message);
     }
+
+    errorManager.on('error', errObserver);
   }
 
   onDestroy() {
@@ -94,11 +103,22 @@ export default class EntryAbility extends UIAbility {
   onForeground() {
     // Ability has brought to foreground
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onForeground');
+
+  }
+
+  fuc1() {
+    console.log('event.hub ' + 'func1');
+  }
+
+  fuc2() {
+    console.log('event.hub ' + 'func2');
   }
 
   onBackground() {
     // Ability has back to background
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onBackground');
+    this.context.eventHub.on('134', this.fuc1);
+    this.context.eventHub.on('134', this.fuc2);
   }
 
   onMemoryLevel(level) {
