@@ -1,10 +1,12 @@
 import appManager from '@ohos.app.ability.appManager';
 import promptAction from '@ohos.promptAction';
 import router from '@ohos.router';
-
+import {default as PageConstUtil} from '../../define/CommonConstUtil'
 @Entry
 @Component
 export struct SecondPage {
+
+
   processInfo() {
     appManager.getRunningProcessInformation().then((data) => {
       console.log('processInfo1' + JSON.stringify(data));
@@ -72,19 +74,18 @@ export struct SecondPage {
   }
 
   goBack() {
-    router.back({ url: 'pages/RootPage' })
+    router.back({ url: PageConstUtil.root})
   }
 
   build() {
     Row() {
       Column() {
-        Text('SecondPage')
+        Text('SecondPage' + router.getParams().toString())
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
         Button('返回').onClick(() => {
 
           this.showDialog();
-          //router.back({url:'pages/RootPage'})
         })
       }
       .width('100%')

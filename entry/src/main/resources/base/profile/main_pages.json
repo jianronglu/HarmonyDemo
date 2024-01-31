@@ -1,6 +1,7 @@
 {
   "src": [
     "pages/RootPage",
-    "pages/SecondPage"
+    "pages/SecondPage",
+    "pages/ThirdPage"
   ]
 }
