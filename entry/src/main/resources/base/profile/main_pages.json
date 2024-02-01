@@ -3,6 +3,8 @@
     "pages/RootPage",
     "pages/SecondPage",
     "pages/ThirdPage",
-    "pages/MeasurePage"
+    "pages/MeasurePage",
+    "pages/WidowPage",
+    "pages/AppearDemo"
   ]
 }

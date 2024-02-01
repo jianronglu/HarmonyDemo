@@ -1,6 +1,9 @@
 import measure from '@ohos.measure';
 import router from '@ohos.router';
-import ConstPagesUtil from '../../define/CommonConstUtil';
+import {
+  ConstPagesUtil,
+  ScreenUtil
+}  from '../../define/CommonConstUtil';
 
 @Entry
 @Component
@@ -16,6 +19,7 @@ export struct MeasurePage {
   }
 
   build() {
+    Row() {//控制元素水平居中
       Column({ space: 20 }) {
         Text('The width of message: ' + this.textWidth)
           .fontColor('#000000')
@@ -34,9 +38,12 @@ export struct MeasurePage {
             router.back({ url: ConstPagesUtil.root })
           })
       }
-      .width('100%')
-      .height('100%')
-      .justifyContent(FlexAlign.Center)//垂直方向
-      .alignItems(HorizontalAlign.Center)//水平方向
+      .width(ScreenUtil.FULL_SCREEN_WIDTH)
+      .height(ScreenUtil.FULL_SCREEN_HEIGHT)
+      .justifyContent(FlexAlign.Center) // colum 垂直方向
+      .alignItems(HorizontalAlign.Center) //colum 水平方向
     }
+    .alignItems(VerticalAlign.Center)//row
+    .justifyContent(FlexAlign.Center)
+  }
 }

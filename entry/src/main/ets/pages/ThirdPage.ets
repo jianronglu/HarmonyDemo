@@ -1,5 +1,6 @@
 import router from '@ohos.router';
-import {default as PageConstUtil} from '../../define/CommonConstUtil'
+import { ConstPagesUtil } from '../../define/CommonConstUtil'
+
 @Entry
 @Component
 export struct ThirdPage {
@@ -32,7 +33,7 @@ export struct ThirdPage {
         .fontSize('red')
         .margin({ top: 30 })
         .onClick(() => {
-          router.back({ url: PageConstUtil.root });
+          router.back({ url: ConstPagesUtil.root });
         })
     }
     .margin({left:15})

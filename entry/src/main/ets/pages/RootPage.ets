@@ -1,75 +1,48 @@
 import router from '@ohos.router'
-import { default as PageConstUtil } from '../../define/CommonConstUtil'
+
+import { ConstPagesUtil, ScreenUtil } from '../../define/CommonConstUtil';
+
+class Item {
+  public readonly router: string = ''
+  public readonly title: string = ''
+  public params: Object | null = null
+
+  constructor(router, title, {params}) {
+    this.router = router
+    this.title = title
+    this.params = params
+  }
+}
 
 @Entry
 @Component
 export struct RootPage {
-  @State message: string = '控件学习'
-
-  jump() {
-    let options = {
-      url: PageConstUtil.second,
-      params: {
-        text: '第二页',
-        data: {
-          array: [1, 2, 3],
-        }
-      }
-    }
-    router.pushUrl(options)
-      .then(() => {
-        console.log('success')
-      })
-      .catch(err => {
-        console.log(JSON.stringify(err))
-      })
-  }
+  private message: string = '控件学习'
+  private list: Array<Item> = [
+    new Item(ConstPagesUtil.second, 'second',{params: [1,2,4]}),
+    new Item(ConstPagesUtil.third, 'third',{params: [1,2,4]}),
+    new Item(ConstPagesUtil.measure, 'measure',{params: [1,2,4]}),
+    new Item(ConstPagesUtil.appear, 'appear',{params: [1,2,4]}),
+  ];
 
   build() {
     Row() {
       Column() {
-        Text(this.message)
-          .fontSize(50)
-          .fontWeight(FontWeight.Bold)
-        Button('下一页').onClick(() => {
-          console.log('点击了按钮');
-          this.jump()
-        })
-        Button() {
-          Text('文本计算')
+        Text(this.message).fontWeight(80).margin({ top: 30 }).fontStyle(FontStyle.Italic).fontSize(30)
+        ForEach(this.list, (item: Item) => {
+          Text(item.title)
             .fontColor('red')
-            .fontWeight(30)
-        }
-        .margin({ top: 30 })
-        .onClick(() => {
-          router.pushUrl({
-            url: PageConstUtil.measure,
-            params: {
-              context: '欢迎进入鸿蒙OS'
-            }
-          })
+            .fontWeight(40)
+            .margin({ top: 15 })
+            .onClick(() => {
+              router.pushUrl({ url: item.router})
+            })
         })
-
-        Button({ type: ButtonType.Normal }) {
-          Text('router 传值')
-            .fontColor('red')
-            .fontSize(30)
-        }.onClick(() => {
-          let options = {
-            url: 'pages/ThirdPage',
-            params: {
-              text: '点击有惊喜哦',
-              data: {
-                array: [1, 2, 3],
-              }
-            }
-          }
-          router.pushUrl(options)
-        })
-        .margin({ top: 30 })
       }
-      .width('100%')
+      .width(ScreenUtil.FULL_SCREEN_WIDTH)
+      .height(ScreenUtil.FULL_SCREEN_HEIGHT)
+      .justifyContent(FlexAlign.Center)
+      .alignItems(HorizontalAlign.Center)
     }
-    .height('100%')
   }
 }
