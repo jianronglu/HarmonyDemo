@@ -14,6 +14,13 @@ class Item {
   }
 }
 
+@Extend(Text) function textStyle() {
+  .fontColor('red')
+  .fontSize(30)
+  .margin({top:5})
+  .borderColor(0X5C5C5C)
+}
+
 @Entry
 @Component
 export struct RootPage {
@@ -31,9 +38,7 @@ export struct RootPage {
         Text(this.message).fontWeight(80).margin({ top: 30 }).fontStyle(FontStyle.Italic).fontSize(30)
         ForEach(this.list, (item: Item) => {
           Text(item.title)
-            .fontColor('red')
-            .fontWeight(40)
-            .margin({ top: 15 })
+            .textStyle()
             .onClick(() => {
               router.pushUrl({ url: item.router})
             })
