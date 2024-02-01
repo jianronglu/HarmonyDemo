@@ -1,5 +1,5 @@
 import router from '@ohos.router'
-import {default as PageConstUtil} from '../../define/CommonConstUtil'
+import { default as PageConstUtil } from '../../define/CommonConstUtil'
 
 @Entry
 @Component
@@ -35,7 +35,22 @@ export struct RootPage {
           console.log('点击了按钮');
           this.jump()
         })
-        Button(){
+        Button() {
+          Text('文本计算')
+            .fontColor('red')
+            .fontWeight(30)
+        }
+        .margin({ top: 30 })
+        .onClick(() => {
+          router.pushUrl({
+            url: PageConstUtil.measure,
+            params: {
+              context: '欢迎进入鸿蒙OS'
+            }
+          })
+        })
+
+        Button({ type: ButtonType.Normal }) {
           Text('router 传值')
             .fontColor('red')
             .fontSize(30)
@@ -51,7 +66,7 @@ export struct RootPage {
           }
           router.pushUrl(options)
         })
-        .margin({top: 30})
+        .margin({ top: 30 })
       }
       .width('100%')
     }

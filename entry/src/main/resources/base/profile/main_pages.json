@@ -2,6 +2,7 @@
   "src": [
     "pages/RootPage",
     "pages/SecondPage",
-    "pages/ThirdPage"
+    "pages/ThirdPage",
+    "pages/MeasurePage"
   ]
 }
